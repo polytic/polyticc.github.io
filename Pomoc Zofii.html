@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('forest.jpg'); /* Załóżmy, że masz plik forest.jpg jako tło */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        .button-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            margin-top: 20px;
+            text-align: center; /* Centrowanie przycisków */
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #2e302e;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px; /* Margines między przyciskami */
+        }
+
+        .action-button:hover {
+            background-color: #313131;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textContainer = document.getElementById('text-container');
+            var text = 'Karolina decyduje się poprosić o pomoc panią Zofię, lokalną ekspertkę od okultyzmu i legend miejskich, która może pomóc zlokalizować tajemne miejsce.\n\n' +
+
+'Karolina: Pani Zofio, jestem wdzięczna, że mogę liczyć na Pani pomoc. Zofia, proszę, musimy odnaleźć to tajemnicze miejsce, o którym wspominał list. Każda wskazówka jest dla nas bezcenna.\n\n' +
+
+'Zofia: Rozumiem, Karolino. To miejsce, o którym mówisz, ma dla mnie szczególne znaczenie. Historia tej okolicy jest bogata w legendy i tajemnice. Jestem przekonana, że potrafimy rozszyfrować te wskazówki i dotrzeć do celu.\n\n' +
+
+'Karolina: Czy masz jakieś konkretne pomysły, gdzie mogłoby to być?\n\n' +
+
+'Zofia: Tak, istnieje jedno miejsce, które od dawna przyciąga moją uwagę. To stara, zapomniana kaplica pośród gęstego lasu. Mówi się, że kiedyś była miejscem kultu, ale teraz opowieści o niej są pełne strachu i zagrożenia.\n\n' +
+
+'Karolina: Jak tam dotrzeć?\n\n' +
+
+'Zofia: Droga do kaplicy jest zawiła i niebezpieczna. Mamy jednak szczęście, że znam ten las jak własną kieszeń. Będę mogła Cię tam poprowadzić.\n\n' +
+
+'Karolina: Dziękuję, Zofio. Wiem, że nie będzie łatwo, ale jestem gotowa na każde wyzwanie, by zakończyć tę klątwę i przywrócić spokój.\n\n' +
+
+'Zofia: Będę przy tobie, Karolino. Razem damy radę. Musimy działać szybko, zanim mrok całkowicie ogarnie to miejsce.\n\n' +
+
+'Karolina: Jestem gotowa. Powiedz mi, jakie będą nasze pierwsze kroki?\n\n' +
+
+'Zofia: Zaczniemy od zbadania starych map i dokumentów, które mogą rzucić światło na historię kaplicy. Potem przejdziemy do terenowych poszukiwań. Musimy być gotowi na każdy możliwy scenariusz.\n\n' +
+
+'Karolina: Rozumiem. Zaczynamy od razu. Dziękuję, że jesteś tu ze mną, Zofio.\n\n' +
+
+'Zofia: To ja powinnam podziękować, że mogę być częścią tej misji, Karolino. Razem damy radę.';
+            var index = 0;
+
+            function showText() {
+                var interval = setInterval(function() {
+                    textContainer.innerHTML += text[index];
+                    textContainer.scrollTop = textContainer.scrollHeight; // Auto-scroll to the bottom
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        showButtons();
+                    }
+                }, 50); // Interwał między kolejnymi literami (50ms)
+            }
+
+            function showButtons() {
+                var buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+                buttonContainer.innerHTML = '<button class="action-button" onclick="window.location.href=\'zagadka.html\'">Przyglądnij się mapom i dokumentom w celu znalezienia jakiegoś punktu zaczepienia</button>';
+                textContainer.appendChild(buttonContainer);
+                setTimeout(function() {
+                    buttonContainer.style.opacity = '1';
+                }, 1000); // Opóźnienie pojawienia się przycisków po zakończeniu pisania tekstu
+            }
+
+            textContainer.style.opacity = '1'; // Pokazanie kontenera tekstowego od razu
+            showText();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wstęp</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        video {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .play-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 50px;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button class="play-button" id="playButton">...</button>
+    <video id="introVideo">
+        <source src="początek1.mp4" type="video/mp4">
+        Twoja przeglądarka nie wspiera odtwarzania wideo.
+    </video>
+
+    <script>
+        const playButton = document.getElementById('playButton');
+        const introVideo = document.getElementById('introVideo');
+
+        playButton.addEventListener('click', function () {
+            playButton.style.display = 'none';
+            introVideo.style.display = 'block';
+            introVideo.play();
+        });
+
+        introVideo.addEventListener('ended', function () {
+            setTimeout(function () {
+                window.location.href = 'początek.html';
+            }, 1000); // 1000 milisekund = 1 sekunda
+        });
+    </script>
+</body>
+</html>

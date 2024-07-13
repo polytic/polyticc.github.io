@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <style>
+        body {
+            background-color: #000000;
+            background-image: url('forest.jpg'); /* Placeholder for forest background image */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+            overflow: hidden; /* Hide overflow to prevent scrolling */
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        /* Overlay for fade effect */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 2s ease; /* Animacja płynnego pojawiania się */
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <!-- Overlay for fade effect -->
+    <div id="overlay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textContainer = document.getElementById('text-container');
+            var overlay = document.getElementById('overlay');
+
+            var text = 'Karolina decyduje się skontaktować z lokalnym medium, panią Zofią, aby spróbować nawiązać kontakt z duchem mężczyzny. Udaje się do jej domu, gdzie zostaje ciepło przyjęta.\n\n' +
+                'Pani Zofia: "Witaj, Karolino. Słyszałam, że potrzebujesz mojej pomocy."\n\n' +
+                'Karolina: "Tak, pani Zofio. Próbuję rozwiązać zagadkę morderstw w naszym lesie. Wierzę, że duch może mieć kluczowe informacje."\n\n' +
+                'Pani Zofia: "Zorganizujemy seans. Duchy często chcą przekazać swoje tajemnice tym, którzy mają odwagę pytać."\n\n';
+
+            var index = 0;
+
+            function showText() {
+                var interval = setInterval(function() {
+                    textContainer.innerHTML += text[index];
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        fadeOutSite();
+                    }
+                }, 50); // Interval between each character (50ms)
+            }
+
+            function fadeOutSite() {
+                // Start fading out after 2 seconds
+                setTimeout(function() {
+                    textContainer.style.opacity = '0';
+                    overlay.style.display = 'block';
+                    setTimeout(function() {
+                        overlay.style.opacity = '1';
+                        // Redirect after fade out
+                        setTimeout(function() {
+                            window.location.href = 'Seans plus.html';
+                        }, 2000); // Redirect after 2 seconds (2000ms) of overlay fade-in
+                    }, 100); // Delay for visual effect
+                }, 2000); // Start fading out after 2 seconds (2000ms) of showing text
+            }
+
+            textContainer.style.opacity = '1'; // Show text container
+            showText(); // Start showing text
+        });
+    </script>
+</body>
+</html>

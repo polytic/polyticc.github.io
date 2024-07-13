@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Załaduj Font Awesome 5 Solid -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xm8v9Rvm2YhCkH8i2wqCZz8x3llChL8F+KXfnW+xOECkM0XHwFJHRHtllwQK+IDmOd8l8XZ0AtapMAY+lIL5KA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('forest.jpg'); /* Załóżmy, że masz plik forest.jpg jako tło */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: relative; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #title-screen {
+            background-size: cover;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            opacity: 1; /* Domyślna widoczność */
+            transition: opacity 1s ease; /* Animacja zmiany przezroczystości */
+        }
+
+        h1 {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #050705;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            animation: pulse 2s infinite;
+            display: inline-block; /* Ustawienie na inline-block */
+        }
+
+        button:hover {
+            background-color: #313131;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(249, 250, 249, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(68, 157, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(68, 157, 68, 0);
+            }
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 80%; /* Maksymalna szerokość tekstu */
+            width: auto; /* Automatyczne dopasowanie szerokości */
+        }
+
+        /* Styl przycisku dźwięku */
+        #sound-control {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            display: flex; /* Dodatkowa linia */
+            align-items: center; /* Dodatkowa linia */
+        }
+
+        #sound-control:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .sound-icon {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="title-screen">
+            <h1>Ścieżka do spokoju przez mrok lasu</h1>
+            <!-- Przycisk z ikoną Font Awesome 5 -->
+            <button onclick="startGame()">
+                Rozpocznij grę
+            </button>
+            <!-- Dodanie elementu audio z dźwiękiem deszczu -->
+            <audio id="rain-sound">
+                <source src="rain.mp3" type="audio/mpeg">
+                Twoja przeglądarka nie obsługuje elementu audio.
+            </audio>
+        </div>
+        <!-- Kontener na tekst, który ma się pojawić po kliknięciu "Rozpocznij grę" -->
+        <div id="text-container">
+            <p id="game-text"></p>
+        </div>
+    </div>
+    <!-- Przycisk kontrolny dźwięku -->
+    <button id="sound-control" onclick="toggleSound()">
+        <i id="sound-icon" class="fas fa-volume-up sound-icon"></i> <!-- Poprawna klasa ikony głośności włączonej -->
+        <span id="sound-text">Dźwięk: Włączony</span>
+    </button>
+    <!-- Skrypty JavaScript -->
+    <script src="game.js"></script>
+    <script>
+        // Funkcja do rozpoczęcia gry
+        function startGame() {
+            // Schowanie ekranu tytułowego
+            var titleScreen = document.getElementById('title-screen');
+            titleScreen.style.opacity = '0';
+            titleScreen.style.pointerEvents = 'none'; // Wyłączenie interakcji z ekranem tytułowym
+            titleScreen.style.transition = 'opacity 1s ease';
+            // Schowanie przycisku dźwięku
+            var soundControl = document.getElementById('sound-control');
+            soundControl.style.display = 'none';
+
+            // Opóźnienie pojawienia się tekstu gry
+            setTimeout(function() {
+                var textContainer = document.getElementById('text-container');
+                textContainer.style.opacity = '1';
+                showText();
+            }, 1000); // Po 1 sekundzie po schowaniu ekranu tytułowego
+        }
+
+        // Funkcja do symulowania "żywego pisania" tekstu
+        function showText() {
+            var gameText = document.getElementById('game-text');
+            var text = "[Akt 1: Początki] Karolina była niezauważaną postacią w swoim małym miasteczku. Pracowała w prosektorium, a jej marzeniem było zostać detektywem. Gdy w mieście doszło do zbrodni, została wyznaczona na główną śledczą, nie z powodu doświadczenia, ale braku alternatyw. Małe miasteczko liczące mniej niż 5 tysięcy osób nie miało wielu opcji."; // Tutaj wpisz tekst swojej gry
+            var index = 0;
+            function addNextLetter() {
+        gameText.textContent += text[index];
+        index++;
+
+        if (index < text.length) {
+            setTimeout(addNextLetter, 50); // Dodawanie kolejnej litery po 50ms
+        } else {
+            setTimeout(redirectToNextPage, 3000); // Po zakończeniu pisania tekstu, przekierowanie po 3 sekundach
+        }
+    }
+
+    addNextLetter();
+}
+
+        // Funkcja do przełączania dźwięku
+        function toggleSound() {
+            var audio = document.getElementById('rain-sound');
+            var soundIcon = document.getElementById('sound-icon');
+            var soundText = document.getElementById('sound-text');
+
+            if (audio.paused) {
+                audio.play();
+                soundIcon.className = 'fas fa-volume-up sound-icon'; // Ustaw klasę ikony głośności włączonej
+                soundText.textContent = 'Dźwięk: Włączony';
+            } else {
+                audio.pause();
+                soundIcon.className = 'fas fa-volume-mute sound-icon'; // Ustaw klasę ikony głośności wyłączonej
+                soundText.textContent = 'Dźwięk: Wyłączony';
+            }
+        }
+        // Funkcja do przekierowania na kolejną stronę
+    function redirectToNextPage() {
+    window.location.href = 'Pierwsza decyzja.html'; // Tutaj podaj ścieżkę do kolejnej strony
+}
+
+        // Początkowy stan przycisku dźwięku (wyłączony dźwięk)
+        document.addEventListener('DOMContentLoaded', function() {
+            var audio = document.getElementById('rain-sound');
+            var soundIcon = document.getElementById('sound-icon');
+            var soundText = document.getElementById('sound-text');
+
+            audio.pause();
+            soundIcon.className = 'fas fa-volume-mute sound-icon';
+            soundText.textContent = 'Dźwięk: Wyłączony';
+        });
+    </script>
+</body>
+</html>

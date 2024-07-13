@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('pobrany plik2.png'); /* Załóżmy, że masz plik forest.jpg jako tło */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        .button-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            margin-top: 20px;
+            text-align: center; /* Centrowanie przycisków */
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #2e302e;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px; /* Margines między przyciskami */
+        }
+
+        .action-button:hover {
+            background-color: #313131;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textContainer = document.getElementById('text-container');
+            var text = 'Postanawiasz udać się na policję, aby poinformować ich o swoich odkryciach dotyczących ciała 72-latki. Gdy docierasz na miejsce, spotykasz komisarza Johnsona.\n\n' +
+                'Komisarz Johnson: "Dzień dobry, pani doktor. Słyszałem, że znalazła pani coś nietypowego podczas badania."\n\n' +
+                'Karolina: "Tak, komisarzu. Znalazłam dziwne zmiany naskórka i ślady ziemi na ciele. Próbka naskórka zawierała mikroskopijne ziarenka gleby, które nie pasują do sytuacji."\n\n' +
+                'Komisarz Johnson: "To brzmi poważnie. Chcielibyśmy, żeby pani przyjrzała się tej sprawie bliżej. Potrzebujemy kogoś z pani umiejętnościami. Czy byłaby pani zainteresowana objęciem posady detektywa?"\n\n' +
+                'Karolina: "To dla mnie zaszczyt. Zgadzam się."\n\n' +
+                'Komisarz Johnson: "W porządku. Zaczynamy od razu. Proszę udać się do biura i przygotować do śledztwa."';
+            var index = 0;
+
+            function showText() {
+                var interval = setInterval(function() {
+                    textContainer.innerHTML += text[index];
+                    textContainer.scrollTop = textContainer.scrollHeight; // Automatyczne przewijanie do ostatniego dodanego tekstu
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        showButtons();
+                    }
+                }, 50); // Interwał między kolejnymi literami (50ms)
+            }
+
+            function showButtons() {
+                var buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+                buttonContainer.innerHTML = '<button class="action-button" onclick="window.location.href=\'Przygotuj się do śledztwa.html\'">Przygotuj się do śledztwa</button>';
+                textContainer.appendChild(buttonContainer);
+                setTimeout(function() {
+                    buttonContainer.style.opacity = '1';
+                }, 1000); // Opóźnienie pojawienia się przycisków po zakończeniu pisania tekstu
+
+                setTimeout(function() {
+                    window.location.href = 'Przygotuj się do śledztwa.html'; // Przekierowanie po 3 sekundach
+                }, 3000);
+            }
+
+            textContainer.style.opacity = '1'; // Pokazanie kontenera tekstowego od razu
+            showText();
+        });
+    </script>
+</body>
+</html>

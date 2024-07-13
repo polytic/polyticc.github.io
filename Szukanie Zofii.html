@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('Karolina Helen las.png'); /* Załóżmy, że masz plik forest.jpg jako tło */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        .button-container {
+    opacity: 0;
+    transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+    margin-top: 20px;
+    text-align: center; /* Centrowanie przycisków */
+    display: flex; /* Wyświetlanie przycisków w linii */
+    justify-content: center; /* Centrowanie przycisków w kontenerze */
+}
+
+.action-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #2e302e;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Ustawienie przycisków w linii */
+    text-decoration: none;
+    margin: 16px; /* Margines między przyciskami */
+    animation: pulse 2s infinite; /* Dodanie animacji pulsowania */
+}
+
+        .action-button:hover {
+            background-color: #313131;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textContainer = document.getElementById('text-container');
+            var text = `Podążają śladami coraz głębiej w las. Nagle słychać głośne uderzenia piorunów i widzą błyskawice, które oświetlają niebo.
+
+Helen: "Karolina, co to jest? Nie spodziewałam się burzy."
+
+Karolina: "To dziwne... Nie ma żadnych chmur na niebie."
+
+Karolina i Helen pędziły za dźwiękiem piorunów przez gęstwinę lasu, serca biły im ze strachu i niepokoju... 
+
+Dotarły do miejsca, gdzie słychać głośne uderzenia piorunów. Znajdują tam młodego mężczyznę, stojącego na skraju polany.
+
+Karolina: "Hej!"
+
+Młody mężczyzna obraca się w ich stronę, jego oczy błyszczą nieznanym światłem.
+
+?: "Nie powinnyście tu być... To niebezpieczne miejsce."
+
+Helen: "Kim jesteś? Co się dzieje?"
+
+?: "Zostawcie to miejsce teraz. Burza jest coraz silniejsza, a to nie jest bezpieczne dla was."
+
+Karolina: "Ale potrzebujemy twojej pomocy. Wiesz coś o klątwie strażnika lasu."
+
+?: "Klątwa... to wszystko co się dzieje, to wszystko wina klątwy. Ale teraz nie ma czasu na opowieści."
+
+Nagle nad lasem pojawił się potężny piorun, który uderzył w pobliskie drzewo, wywołując pożar.
+
+Karolina: "Musimy uciekać! chodź z nami!"
+
+?: "Nie mogę... Muszę to zatrzymać."
+
+Mężczyzna biegł w kierunku płonących drzew, próbując gasić ogień swoimi niezwykłymi umiejętnościami.
+
+Helen: "Karolina, musimy go ratować!"
+
+Karolina i Helen podążyły za mężczyzną, starając się go osłonić przed ogniem. Udało im się dotrzeć do niego, gdy nagle kolejna błyskawica uderzyła w ziemię niedaleko nich. Mężczyzna szybko wyciągnął ręce, aby chronić Karolinę, ale sam został poważnie porażony.
+
+?: "Uciekajcie... Ja dam radę..."
+
+Karolina: "Nie! Nie zostawimy cię!"
+
+?: "Jestem tu od dłuższego czasu... Moja rodzina... Musicie to zakończyć..."
+
+Helen: "Karolina, musimy go posłuchać. Nie mamy czasu!"
+
+Karolina: "Przepraszam... Dziękujemy za wszystko."
+
+?: "Zakończcie klątwę..."
+
+Z ostatnimi słowami mężczyzna umarł, chroniąc Karolinę i Helen przed kolejnym uderzeniem pioruna. Ich serca były wstrząśnięte tym poświęceniem. Oszołomione kobiety wiedziały, że muszą teraz za wszelką cenę zakończyć to wszystko.
+
+Helen: "To nie może być prawda... On..."
+
+Karolina: "Musimy go posłuchać. Musimy zakończyć to, co zaczęliśmy."
+
+Karolina: "Helen! pani Zofia może być w niebezpieczeństwie, zapomniałyśmy o niej! Musimy ją znaleźć!"
+
+Helen: "Karolina, tam! Za drzewami, obok miejsca, gdzie był ten mężczyzna."
+
+Karolina i Helen szybko podążyły wskazanym kierunkiem i dostrzegły Zofię, siedzącą niespokojnie na ziemi, trzymającą w dłoniach dziwny artefakt. Karolina dobiega do Zofii jako pierwsza, gdy nagle rozległ się głośny pisk, to Helen. Karolina odwróciła się w stronę przyjaciółki, która potknęła się o gałąź starego drzewa, a ta chwyciła ją za nogę powoli ją zgniatając.
+
+Helen: "Karolina! Najpierw Zofia..." - wykrzyknęła resztkami sił
+
+Karolina: "Pani Zofio! Jesteś w porządku?"
+
+Zofia: "Tak, tak... Nie wiem co się stało... Nie pamiętam, stałam w kaplicy, patrzyłam na obraz próbując przeczytać inskrypcję, gdy nagle znalazłam się tutaj, obok mężczyzny... Próbowałam mu pomóc."
+
+Karolina: "Co trzymasz w ręce, co to jest?"
+
+Zofia: "To... To jest artefakt, który jest kluczem do usunięcia klątwy z tego miejsca. Mężczyzna przekazał mi go, nim nadeszła ta straszna burza."
+
+Karolina: "Możesz wstać Zofio?"
+
+Zofia: "Nie, nie czuję... nie czuję nóg."
+
+Karolina staje przed trudnym wyborem. Widzi Helen, która leży przygnieciona przez gałąź, która ją zgniata, i Zofię, która trzyma artefakt kluczowy do zakończenia klątwy, ale nie może się ruszyć.`;
+            var index = 0;
+
+            function showText() {
+                var interval = setInterval(function() {
+                    textContainer.innerHTML += text[index];
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        showButtons();
+                    }
+                    textContainer.scrollTop = textContainer.scrollHeight; // Automatyczne przewijanie
+                }, 50); // Interwał między kolejnymi literami (50ms)
+            }
+
+            function showButtons() {
+                var buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+                buttonContainer.innerHTML = `
+                    <button class="action-button" onclick="window.location.href='Pomóż Zofii.html'">Pomóż Zofii</button>
+                    <button class="action-button" onclick="window.location.href='Pomóż Helen.html'">Pomóż Helen</button>
+                `;
+                textContainer.appendChild(buttonContainer);
+                setTimeout(function() {
+                    buttonContainer.style.opacity = '1';
+                }, 1000); // Opóźnienie pojawienia się przycisków po zakończeniu pisania tekstu
+            }
+
+            textContainer.style.opacity = '1'; // Pokazanie kontenera tekstowego od razu
+            showText();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('forest.jpg'); /* Załóżmy, że masz plik forest.jpg jako tło */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        .button-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            margin-top: 20px;
+            text-align: center; /* Centrowanie przycisków */
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #2e302e;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px; /* Margines między przyciskami */
+        }
+
+        .action-button:hover {
+            background-color: #313131;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            z-index: 999;
+            pointer-events: none; /* Pozwala na klikanie elementów pod overlayem */
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+        }
+
+        .overlay.active {
+            opacity: 0.9;
+            pointer-events: auto; /* Aktywowanie klikalności overlaya */
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textContainer = document.getElementById('text-container');
+            var overlay = document.getElementById('overlay');
+            var text = 'Zbudowane na wspólnym zaufaniu i przyjaźni, dwie kobiety ruszyły w głąb lasu, podążając za wskazówkami starożytnych map. Ścieżka była pełna trudności: gałęzie rozwisłe niczym dłonie chcące zatrzymać ich postęp, a mrok z każdym krokiem stawał się gęstszy. Jednak w sercach obu kobiet płonęła nadzieja na odkrycie tajemniczej mocy, która mogła zakończyć wiekopomną klątwę strażnika lasu.\n\n' +
+
+'Helen: "Jesteśmy blisko. To tam, za tymi drzewami. Widzisz tę starą kaplicę? To musi być to miejsce."\n\n' +
+
+'Karolina: "Tak, widzę ją. Musimy być ostrożne. Może tam być coś, czego się nie spodziewamy."\n\n' +
+
+'Zbliżając się do kaplicy, dostrzegły starą, zarośniętą kryptę położoną nieopodal. Jej wejście było częściowo zasłonięte przez bluszcz, a kamienne drzwi wyglądały na dawno nieużywane.\n\n' +
+
+'Helen: "Ta krypta musi skrywać coś ważnego. Strażnik Lasu wspomniał o niej w swoich notatkach."\n\n' +
+
+'Karolina: "Może tu znajdziemy kolejne wskazówki. Sprawdźmy, czy możemy wejść do środka."\n\n' +
+
+'Helen zaczęła odgarniać bluszcz z kamiennych drzwi, a Karolina szukała sposobu na ich otwarcie. Po chwili udało się im znaleźć stary, zardzewiały mechanizm blokujący drzwi.\n\n' +
+
+'Helen: "Wygląda na to, że ten mechanizm można otworzyć, ale musimy znaleźć odpowiednią kombinację."\n\n' +
+
+'Helen: "Strażnik Lasu wspominał o starej krypcie przy kaplicy. Powiedział, że klucz do niej znajdziemy, rozwiązując zagadkę ukrytą w jego słowach."\n\n' +
+
+'Karolina: "Tak, pamiętam. Mówił też, że klucz jest w rękach osoby, która zasługuje na miłość."\n\n' +
+
+'Helen: "Dokładnie. Musimy przypomnieć sobie, co jeszcze napisał. "Moja dusza nie zazna spokoju, dopóki do lasu nie przyjdzie osoba, której uczucia będą w stanie przewiać najciemniejszy mrok."\n\n' +
+
+'Karolina: "To musi oznaczać, że jest w tym gdzieś odpowiedź. Co jest w stanie przewiać mrok?"';
+            var index = 0;
+
+            function showText() {
+                var interval = setInterval(function() {
+                    textContainer.innerHTML += text[index];
+                    index++;
+                    textContainer.scrollTop = textContainer.scrollHeight; // Automatyczne przewijanie do ostatniego tekstu
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        showButtons();
+                    }
+                }, 50); // Interwał między kolejnymi literami (50ms)
+            }
+
+            function showButtons() {
+                var buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+                buttonContainer.innerHTML = '<button class="action-button" id="openDoorBtn">Otwórz drzwi</button>';
+                textContainer.appendChild(buttonContainer);
+                setTimeout(function() {
+                    buttonContainer.style.opacity = '1';
+                }, 1000); // Opóźnienie pojawienia się przycisku po zakończeniu pisania tekstu
+
+                // Dodanie obsługi kliknięcia do przycisku
+                var openDoorBtn = document.getElementById('openDoorBtn');
+                openDoorBtn.addEventListener('click', openDoor);
+            }
+
+            function openDoor() {
+                overlay.classList.add('active');
+                setTimeout(function() {
+                    window.location.href = 'zamek łamigłówka2.html';
+                }, 1000); // Opóźnienie przekierowania po zaciemnieniu strony
+            }
+
+            textContainer.style.opacity = '1'; // Pokazanie kontenera tekstowego od razu
+            showText();
+        });
+    </script>
+</body>
+</html>

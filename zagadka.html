@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ścieżka do spokoju przez mrok lasu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1f1f1f;
+            background-image: url('forest.jpg'); /* Przykładowe tło lasu */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ustawienie na pozycję względną dla body */
+        }
+
+        #game-container {
+            position: static; /* Ustawienie kontenera gry na pozycję względną */
+            text-align: center;
+        }
+
+        #text-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            overflow-y: auto;
+            max-height: 70vh;
+            margin: 50px auto; /* Odstęp od góry i dołu, automatyczne centrowanie */
+            background-color: rgba(255, 255, 255, 0.8); /* Kolor tła */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Cień */
+            white-space: pre-wrap; /* Utrzymaj formatowanie tekstu */
+            font-family: 'Courier New', Courier, monospace; /* Czcionka */
+            font-size: 24px; /* Rozmiar czcionki */
+            line-height: 1.6; /* Wysokość wiersza */
+            position: relative; /* Ustawienie na pozycję względną */
+            text-align: left; /* Wyrównanie tekstu do lewej */
+            max-width: 60%; /* Maksymalna szerokość tekstu */
+            width: fit-content; /* Automatyczne dopasowanie szerokości */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+
+        .button-container {
+            opacity: 0;
+            transition: opacity 1s ease; /* Animacja płynnego pojawiania się */
+            margin-top: 20px;
+            text-align: center; /* Centrowanie przycisków */
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #2e302e;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px; /* Margines między przyciskami */
+        }
+
+        .action-button:hover {
+            background-color: #313131;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #000000;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 300px; /* Szerokość pola tekstowego */
+            background-color: rgba(0, 0, 0, 0.8); /* Kolor tła pola */
+            box-sizing: border-box; /* Ustawienie modelu pudełkowego na border-box */
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="text-container"></div>
+    </div>
+
+    <script>
+        var textContainer; // Deklaracja zmiennej textContainer na poziomie globalnym
+        var hintIndex = 0; // Licznik podpowiedzi
+        var hints = [
+            "do tych",
+            "zasługują.",
+            "Szczęście",
+            "którzy są",
+            "cierpliwi",
+            "i którzy",
+            "przychodzi",
+            "na to",
+        ];
+
+        function normalizePassword(password) {
+            // Normalizacja hasła - usuwanie diakrytyków i znaków interpunkcyjnych
+            return password.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "")
+                .replace(/\s/g, '')
+                .replace(/[\s]/g, "")
+                .replace(/[ą]/g, "a")
+                .replace(/[ć]/g, "c")
+                .replace(/[ę]/g, "e")
+                .replace(/[ł]/g, "l")
+                .replace(/[ń]/g, "n")
+                .replace(/[ó]/g, "o")
+                .replace(/[ś]/g, "s")
+                .replace(/[źż]/g, "z");
+        }
+
+        function checkPassword() {
+            var inputPassword = normalizePassword(document.getElementById('password').value.trim());
+            var correctPassword = normalizePassword("Szczęście przychodzi do tych którzy są cierpliwi i którzy na to zasługują");
+
+            if (inputPassword === correctPassword) {
+                textContainer.style.opacity = '0';
+                setTimeout(function() {
+                    window.location.href = "wyprawa.html"; // Zmień na odpowiedni adres URL
+                }, 1000);
+            } else {
+                // Usuń poprzednią podpowiedź, jeśli istnieje
+                var hintElements = document.getElementsByClassName('hint');
+                if (hintElements.length > 0) {
+                    textContainer.removeChild(hintElements[0]);
+                }
+
+                // Dodaj nową podpowiedź
+                var hintElement = document.createElement('p');
+                hintElement.classList.add('hint');
+                hintElement.textContent = "Podpowiedź: " + hints[hintIndex];
+                textContainer.appendChild(hintElement);
+
+                hintIndex = (hintIndex + 1) % hints.length; // Przejście do następnej podpowiedzi w cyklu
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            textContainer = document.getElementById('text-container'); // Przypisanie textContainer
+
+            var text = 'W półmroku starej chaty, Zofia i Karolina przeglądały starożytne pergaminowe dokumenty, starannie zwojowane i pokryte delikatnymi liniami łacińskiego pisma. Zofia, trzymając w rękach pergamin, zwróciła uwagę na wytarte słowa, które mogły rzucić światło na niejasne wydarzenia w ich poszukiwaniach.\n\n'
+                     + 'Zofia: (przesuwając palcem po słowach): To sentencje, zapisane chyba w łacinie. Zdaje się, że każde z tych słów jest jak kawałek układanki, który może doprowadzić nas do rozwiązania.\n\n'
+                     + 'Zofia: (czyta z dokumentu) "Beatitudo est magna virtus." To znaczy "Szczęście to wielka cnota.".\n\n'
+                     + 'Karolina: Szczęście, cnota... Może to odnosić się do postawy strażnika lasu? Może on był uznawany za osobę szczególnie godną bycia szczęśliwym?\n\n'
+                     + 'Zofia: (przechodzi do następnej sentencji) "Felicitas cum labore venit." To znaczy "Szczęście przychodzi z pracą." To może sugerować, że musimy poszukać czegoś, co wymaga wysiłku lub pracy.\n\n'
+                     + 'Karolina: "Może to oznaczać miejsce, które jest trudno dostępne lub wymaga naszego wysiłku, by do niego dotrzeć."\n\n'
+                     + 'Zofia: (kontynuuje) "Iis qui diligent." To znaczy "Tym, którzy pracują sumiennie." To może wskazywać na kogoś lub coś, co było wyjątkowo pilne w wykonaniu swojego zadania.\n\n'
+                     + 'Zofia: (przekręca kolejną kartkę) "Qui cum patientia vincunt. Erant semper fortes. Patientes vincunt omnia. Et virtus, et sapientia." To są bardziej opisowe sentencje. "Ci, którzy z cierpliwością zwyciężają, zawsze byli silni. Cierpliwość zwycięża wszystko."\n\n'
+                     + 'Karolina: "Cierpliwość, siła, cnota i mądrość... To brzmi jak cechy, które mogłyby przypisywać się strażnikowi lasu."\n\n'
+                     + 'Zofia: "Możemy wybrać odpowiednie słowa z tych sentencji, aby ułożyć frazę, która będzie kluczem do dalszego poszukiwania."\n\n'
+                     + 'Karolina: "Te sentencje mówią o cierpliwości, o zasługiwaniu na szczęście... Może to wszystko prowadzi do jednego wniosku.. Zapiszmy te słowa i spróbujmy ułożyć frazę, która pomoże nam odszyfrować dalsze wskazówki."';
+
+            var index = 0;
+            var intervalId; // Identyfikator interwału
+
+            function showText() {
+                textContainer.style.opacity = '1'; // Pokazanie kontenera tekstowego od razu
+                var tempText = ''; // Tymczasowy tekst do wyświetlenia
+                intervalId = setInterval(function() {
+                    if (index < text.length) {
+                        tempText += text[index];
+                        textContainer.innerHTML = tempText;
+                        textContainer.scrollTop = textContainer.scrollHeight; // Automatyczne przewijanie do ostatniego dodanego znaku
+                        index++;
+                    } else {
+                        clearInterval(intervalId);
+                        showButtons();
+                    }
+                }, 55); // Interwał między kolejnymi literami (50ms)
+            }
+
+            function showButtons() {
+                var buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+                buttonContainer.innerHTML = '<input type="text" id="password" class="action-button" placeholder="Wprowadź frazę">' 
+                                          + '<button class="action-button" onclick="checkPassword()">Sprawdź</button>';
+                textContainer.appendChild(buttonContainer);
+                setTimeout(function() {
+                    buttonContainer.style.opacity = '1';
+                }, 1000); // Opóźnienie pojawienia się przycisków po zakończeniu pisania tekstu
+            }
+
+            showText();
+        });
+    </script>
+</body>
+</html>

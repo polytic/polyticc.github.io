@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film 20 sekundowy</title>
+    <style>
+        body {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        #video-container {
+            text-align: center;
+        }
+
+        video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: none; /* Początkowo ukryj video */
+        }
+
+        .play-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .play-button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="myVideo">
+            <source src="film.mp4" type="video/mp4">
+            Twoja przeglądarka nie obsługuje tagu video.
+        </video>
+        <button class="play-button" onclick="playVideo()">Rozpocznij seans...</button>
+    </div>
+
+    <script>
+        function playVideo() {
+            var video = document.getElementById('myVideo');
+            var button = document.querySelector('.play-button');
+            button.style.display = 'none'; // Ukryj przycisk po kliknięciu
+
+            // Rozpocznij odtwarzanie
+            video.style.display = 'block'; // Pokaż video
+            video.play(); // Rozpocznij odtwarzanie
+
+            // Przekierowanie po zakończeniu filmu
+            video.addEventListener('ended', function() {
+                setTimeout(function() {
+                    window.location.href = 'Seans.html';
+                }, 2000); // Przekierowanie po 2 sekundach od zakończenia filmu
+            });
+        }
+    </script>
+</body>
+</html>

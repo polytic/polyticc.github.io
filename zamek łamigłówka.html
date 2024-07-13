@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanizm Zamka</title>
+    <style>
+        body {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #lock-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .disk {
+            background-color: #2e302e;
+            padding: 20px;
+            border: 2px solid #000000;
+            border-radius: 5px;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 4s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="lock-container">
+        <div class="disk" id="disk1">A</div>
+        <div class="disk" id="disk2">B</div>
+        <div class="disk" id="disk3">C</div>
+        <div class="disk" id="disk4">D</div>
+        <div class="disk" id="disk5">E</div>
+    </div>
+    <div id="message"></div>
+
+    <script>
+        const disks = document.querySelectorAll('.disk');
+        const correctCombination = ['W', 'I', 'A', 'R', 'A'];
+        let currentCombination = ['A', 'B', 'C', 'D', 'E'];
+
+        disks.forEach((disk, index) => {
+            disk.addEventListener('click', () => {
+                rotateDisk(disk, index);
+                checkCombination();
+            });
+        });
+
+        function rotateDisk(disk, index) {
+            const characters = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let currentChar = disk.textContent;
+            let nextIndex = (characters.indexOf(currentChar) + 1) % characters.length;
+            disk.textContent = characters[nextIndex];
+            currentCombination[index] = characters[nextIndex];
+        }
+
+        function checkCombination() {
+            if (JSON.stringify(currentCombination) === JSON.stringify(correctCombination)) {
+                document.getElementById('message').textContent = 'Kombinacja poprawna! Drzwi otwarte.';
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = 'Kaplica.html'; // Przekierowanie do następnej strony
+                }, 3500); // 2000ms = 2s, czas trwania animacji zanikania
+            } else {
+                document.getElementById('message').textContent = 'Kombinacja niepoprawna. Spróbuj ponownie.';
+            }
+        }
+    </script>
+</body>
+</html>
